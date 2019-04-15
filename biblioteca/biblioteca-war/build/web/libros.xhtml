@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./WEB-INF/Template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        
+          
+        <h:form id="formulario">
+            <p:fieldset legend="Informacion de los Libros">
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Guardar" action="#{libroBean.insertar()}"
+                                         update=":formulario :formularioDatos"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:growl autoUpdate="true"/>    
+
+                <p:panelGrid columns="4">
+                    
+                    <h:outputLabel value="Nombre" for="nom"/>
+                    <p:inputText id="nom" value="#{libroBean.libros.nombreLibro}" required="true"/>
+                    
+                    <h:outputLabel value="Autor" for="a"/>
+                    <p:selectOneMenu id="a" value="#{libroBean.autores.idAutor}">
+                        <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                        <f:selectItems value="#{libroBean.autoreses}" var="l"
+                                       itemLabel="#{l.nombreAutore}" itemValue="#{l.idAutor}"/>
+                    </p:selectOneMenu>
+                    
+                    <h:outputLabel value="Editorial" for="edi"/>
+                    <p:inputText id="edi" value="#{libroBean.libros.editorial}" required="true"/>
+                    
+                    <h:outputLabel value="Anho de Publicacion" for="an"/>
+                    <p:inputText id="an" value="#{libroBean.libros.fechaPublicacion}"/>
+
+                </p:panelGrid>
+
+                <h:inputHidden id="idLibros" value="#{libroBean.libros.idLibro}"/>
+                
+            </p:fieldset>
+        </h:form>
+        
+        
+        <h:form id="formularioDatos">
+
+            <p:dataTable value="#{libroBean.libroses}" var="l">
+
+                <p:column>
+                    <p:commandButton value="Editar" action="#{libroBean.setLibros(l)}"
+                                     update=":formulario :formularioDatos" />
+                    
+                </p:column>
+                <p:column>
+                    
+                    <p:commandButton value="Quitar" action="#{libroBean.quitar(l)}"
+                                     update=":formularioDatos"/>    
+                </p:column>
+                
+
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{l.idLibro}"/>
+                </p:column>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{l.nombreLibro}"/>
+                </p:column>
+                <p:column headerText="Autor">
+                    <h:outputText value="#{l.idAutor.nombreAutore}"/>
+                </p:column>
+                <p:column headerText="Editorial">
+                    <h:outputText value="#{l.editorial}"/>
+                </p:column>
+                <p:column headerText="Anho de publicacion">
+                    <h:outputText value="#{l.fechaPublicacion}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+        
+    </ui:define>
+
+</ui:composition>
